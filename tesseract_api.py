@@ -15,6 +15,7 @@ class ImageData(BaseModel):
 
 
 def base64_2_image(base64_image_data: str) -> Image.Image:
+    # decoding base64 to image
     try:
         image_data = base64.b64decode(base64_image_data)
         image_file = Image.open(io.BytesIO(image_data))
@@ -26,6 +27,7 @@ def base64_2_image(base64_image_data: str) -> Image.Image:
 @app.post("/ocr")
 async def perform_ocr(data: ImageData):
     try:
+        # preprocessing image for better ocr accuracy
         image = base64_2_image(data.image)
         image_np = np.array(image)
         gray_image = cv2.cvtColor(image_np, cv2.COLOR_RGB2GRAY)
